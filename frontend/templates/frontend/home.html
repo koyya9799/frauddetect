@@ -1,20 +1,65 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>FraudShield Dashboard</title>
-    <link rel="stylesheet" href="{% static 'frontend/css/style.css' %}">
+  <meta charset="utf-8" />
+  <title>FraudShield Dashboard</title>
+  <link rel="stylesheet" href="{% static 'frontend/css/style.css' %}">
+  <script defer src="{% static 'frontend/js/main.js' %}"></script>
+  <meta name="csrf-token" content="{{ csrf_token }}">
+  <!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 <body>
-    <header>
-        <h1>FraudShield</h1>
-        <p>Real-time Credit Card Fraud Detection</p>
-    </header>
+  <header>
+    <h1>FraudShield</h1>
+    <p>Real-time Credit Card Fraud Detection</p>
+  </header>
 
-    <div class="container">
-        <h2>Welcome to FraudShield</h2>
-        <p>Predict fraud with confidence.</p>
-        <button onclick="alert('Coming soon!')">Test Prediction</button>
+  <div class="container">
+    <h2>Quick Test</h2>
+    <p>Paste <strong>30</strong> comma-separated values (Time, Amount, V1…V28) or click “Load sample”.</p>
+
+    <textarea id="features" rows="4" style="width:100%;" placeholder="0.12, -1.34, 0.56, ... (30 numbers)"></textarea>
+
+    <div style="margin:12px 0;">
+      <button id="loadSampleBtn" type="button">Load sample</button>
+      <button id="predictBtn" type="button">Predict</button>
     </div>
+
+    <div id="result" style="display:none; padding:12px; border-radius:8px;">
+      <strong>Result:</strong> <span id="resultText"></span>
+    </div>
+
+    <h3>Recent Predictions</h3>
+        <table id="historyTable" border="1" style="width:100%; border-collapse:collapse; margin-top:10px;">
+        <thead>
+            <tr>
+            <th>Time</th>
+            <th>Features</th>
+            <th>Prediction</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+        </table>
+
+                <h2>📊 Analytics</h2>
+
+        <div class="charts-container" style="display: flex; gap: 20px; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 300px;">
+            <h3>Fraud vs Legit</h3>
+            <canvas id="pieChart"></canvas>
+        </div>
+        <div style="flex: 1; min-width: 300px;">
+            <h3>Predictions Over Time</h3>
+            <canvas id="lineChart"></canvas>
+        </div>
+        </div>
+
+
+
+    <div id="error" style="display:none; color:#b00020; margin-top:8px;"></div>
+  </div>
 </body>
 </html>
